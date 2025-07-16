@@ -5,6 +5,41 @@
   --foreground: #171717;
 }
 
+@theme {
+  --color-brand-a: #EDEDE9;
+  --color-brand-b: #D6CCC2;
+  --color-brand-c: #F5EBE0;
+  --color-brand-d: #E3D5CA;
+  --color-brand-e: #D5BDAF;
+
+  /* Breakpoints personalizados para pantallas */
+  --breakpoint-xxs: 320px; /* Teléfonos muy pequeños */
+  --breakpoint-xs: 475px; /* Teléfonos pequeños */
+  --breakpoint-sm: 640px; /* Teléfonos grandes (estándar) */
+  --breakpoint-md: 768px; /* Tablets (estándar) */
+  --breakpoint-lg: 1024px; /* Laptops (estándar) */
+  --breakpoint-xl: 1280px; /* Desktops (estándar) */
+  --breakpoint-2xl: 1536px; /* Pantallas grandes (estándar) */
+  --breakpoint-3xl: 1920px; /* Pantallas muy grandes */
+  --breakpoint-4xl: 2560px; /* Pantallas ultra anchas */
+
+  /* Tamaños de spacing personalizados */
+  --spacing-xxs: 0.125rem;
+  --spacing-xs: 0.25rem;
+
+  /* Tamaños de width personalizados */
+  --width-xxs: 0.5rem;
+  --width-xs: 0.75rem;
+
+  /* Tamaños de height personalizados */
+  --height-xxs: 0.5rem;
+  --height-xs: 0.75rem;
+
+  /* Tamaños de font personalizados */
+  --font-size-xxs: 0.625rem;
+  --font-size-xs: 0.75rem;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
