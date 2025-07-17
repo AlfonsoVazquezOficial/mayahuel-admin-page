@@ -14,14 +14,14 @@ const BaseContainer: React.FC<BaseContainerProps> = ({
   description = null,
 }) => {
   return (
-    <main className="flex-1 bg-gray-100 text-gray-800 p-6 rounded-lg">
+    <main className="flex-1 dark:bg-gray-800 dark:text-gray-100 bg-gray-100 text-gray-800 p-6 rounded-lg">
       <h1
         className="text-3xl font-bold mb-4 text-center"
 
       >
         {title}
       </h1>
-      {description && <p className="text-gray-800 mb-6">{description}</p>}
+      {description && <p className="dark:text-gray-100 text-gray-800 mb-6">{description}</p>}
 
       {children}
     </main>

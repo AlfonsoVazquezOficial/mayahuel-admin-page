@@ -11,7 +11,7 @@ interface BasePageProps {
 
 const BasePage: React.FC<BasePageProps> = ({ children, title, description }) => {
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-brand-a p-4 gap-4 overflow-hidden">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-brand-a dark:bg-gray-900 p-4 gap-4 overflow-hidden">
       <Sidebar />
       <BaseContainer title={title} description={description}>
         {children}
