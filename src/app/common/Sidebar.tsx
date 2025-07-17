@@ -216,7 +216,7 @@ const Sidebar = () => {
           <div className="flex-shrink-0 p-5 border-t dark:border-gray-700 border-gray-200">
             <ThemeToggle />
             <div
-              className="flex items-center gap-2 p-3 dark:hover:bg-gray-600 hover:bg-blue-100 rounded-md cursor-pointer transition-all"
+              className="flex items-center gap-2 p-3 dark:hover:bg-gray-600 hover:bg-brand-c rounded-md cursor-pointer transition-all"
               onClick={toggleLanguage}
             >
               <Languages size={20} />

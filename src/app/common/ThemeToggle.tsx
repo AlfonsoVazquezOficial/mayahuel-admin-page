@@ -25,7 +25,7 @@ export function ThemeToggle() {
       onClick={() =>
         setTheme(currentTheme === "dark" ? "light" : "dark")
       }
-      className="flex items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-muted cursor-pointer mb-2 dark:hover:bg-gray-300 dark:hover:text-gray-800 hover:bg-gray-800 hover:text-gray-100"
+      className="flex items-center gap-2 p-3  rounded-md transition-all cursor-pointer mb-2 dark:hover:bg-gray-300 dark:hover:text-gray-800 hover:bg-gray-800 hover:text-gray-100"
     >
       {currentTheme === "dark" ? (
         <>
