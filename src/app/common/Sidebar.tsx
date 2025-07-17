@@ -186,7 +186,8 @@ const Sidebar = () => {
             )}
 
             {/* Navigation - CONTENIDO SCROLLEABLE */}
-            <nav className="flex flex-col gap-2 border-t border-gray-300 pt-4 flex-1">
+            <div className="flex-1 overflow-y-scroll scrollbar-hide transition-all">
+                <nav className="flex flex-col gap-2 border-t border-gray-300 pt-4 flex-1">
               {translations[language].options.map((item, i) => {
                 const isActive = pathname === item.path || pathname.startsWith(item.path + "/")
 
@@ -203,6 +204,8 @@ const Sidebar = () => {
                 )
               })}
             </nav>
+            </div>
+            
           </div>
         )}
 

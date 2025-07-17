@@ -60,3 +60,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Método 1: Ocultar scrollbar completamente (más compatible) */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
