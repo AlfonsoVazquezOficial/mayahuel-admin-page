@@ -9,7 +9,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Example Jewelry Admin",
+  title: "Ethos Jewelry Admin",
   description: "Admin interface for managing jewelry products",
 };
 
