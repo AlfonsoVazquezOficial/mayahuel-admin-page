@@ -23,3 +23,60 @@ export type Tag = {
     color: string; // Color associated with the tag
     discount?: number; // Optional discount percentage for the tag
 }
+
+export type Product = {
+    id: string; // Unique identifier for the product
+    name: string; // Name of the product
+    description?: string; // Optional description of the product
+    price: number; // Price of the product
+    stock: number; // Stock quantity of the product
+    categoryId: string; // ID of the category this product belongs to
+    supplierId?: string; // Optional ID of the supplier for this product
+    tags?: Tag[]; // Optional array of tags associated with the product
+    createdAt: string; // Date when the product was created
+    images?: string[]; // Optional array of image URLs for the product
+    discount?: number; // Optional discount percentage for the product
+    minimumStock?: number; // Optional minimum stock quantity for the product
+}
+
+export type OrderStatus = {
+    id: string; // Unique identifier for the order status
+    name: string; // Name of the order status (e.g., "Pending", "Completed")
+    description?: string; // Optional description of the order status
+}
+
+export type OrderPaymentDetails = {
+    id: string; // Unique identifier for the order
+    clientName: string; // Name of the client who placed the order
+    clientEmail: string; // Email address of the client
+    clientPhone: string; // Phone number of the client
+    paymentMethod: string; // Payment method used for the order
+    paymentId?: string; // Optional payment ID if available
+    paymentStatus: string; // Status of the payment (e.g., "Paid", "Pending")
+}
+
+export type Order = {
+    id: string; // Unique identifier for the order
+    products: Product[]; // Array of products in the order
+    totalAmount: number; // Total amount for the order
+    paymentDetails: OrderPaymentDetails; // Payment details for the order
+    createdAt: string; // Date when the order was created
+    updatedAt?: string; // Optional date when the order was last updated
+    status: OrderStatus; // Current status of the order (e.g., pending, completed)
+}
+
+export const NOTIFICATION_TYPES = {
+    INFO: 'info',
+    SUCCESS: 'success',
+    WARNING: 'warning',
+    ERROR: 'error',
+    DISCOUNT: 'discount',
+} as const;
+
+export type Notification = {
+    id: string;
+    type: keyof typeof NOTIFICATION_TYPES;
+    message: string;
+    createdAt: string;
+    isActive: boolean;
+}

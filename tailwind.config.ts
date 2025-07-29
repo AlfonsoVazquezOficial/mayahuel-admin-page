@@ -3,6 +3,8 @@
 // ¡IMPORTANTE! Elimina esta línea: import { color } from "framer-motion";
 // Los archivos de configuración de Tailwind no deben tener imports de React/Framer Motion.
 
+import tailwindcssAnimated from "tailwindcss-animated";
+
 const config = {
   darkMode: "class", // Correcto
   content: [
@@ -19,7 +21,10 @@ const config = {
         
     },
   },
-  plugins: [], // Asegúrate de que tus plugins estén aquí, como tailwindcss-animate si lo usas
+  plugins: [
+    tailwindcssAnimated, // Asegúrate de que este plugin esté instalado
+    // Otros plugins que necesites
+  ], // Asegúrate de que tus plugins estén aquí, como tailwindcss-animate si lo usas
 }
 
 export default config

@@ -14,7 +14,7 @@ import {
   Group,
   HashIcon,
 } from "lucide-react"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useState, useEffect, type ReactNode } from "react"
 import { ThemeToggle } from "./ThemeToggle"
 
@@ -80,6 +80,7 @@ const Sidebar = () => {
     email: "demo@example.com",
   })
   const pathname = usePathname()
+  const router = useRouter();
 
   useEffect(() => {
     const handleResize = () => {
@@ -108,6 +109,7 @@ const Sidebar = () => {
 
   const logout = () => {
     setUser(null)
+    router.push("/login");
   }
 
   return (
@@ -179,7 +181,7 @@ const Sidebar = () => {
                 <p className="text-sm font-semibold">{user.name}</p>
                 <p className="text-xs text-gray-400">{user.email}</p>
                 <button
-                  className="bg-red-500 hover:bg-red-600 dark:text-white text-gray-100 py-2 px-4 rounded-md mt-3 flex items-center gap-2 shadow-md transition-all"
+                  className="bg-red-500 hover:bg-red-600 dark:text-white text-gray-100 py-2 px-4 rounded-md mt-3 flex items-center gap-2 shadow-md transition-all cursor-pointer"
                   onClick={logout}
                 >
                   Cerrar Sesión
@@ -196,7 +198,7 @@ const Sidebar = () => {
                 return (
                   <button
                     key={i}
-                    onClick={() => (window.location.href = item.path)}
+                    onClick={() => (router.push(item.path), isMobile && setIsOpen(false))}
                     className={`p-3 rounded-md flex gap-3 items-center transition-all cursor-pointer ${
                       isActive ? "dark:bg-gray-900 dark:text-gray-300 bg-brand-e text-gray-800" : "dark:hover:bg-gray-600 hover:bg-brand-c"
                     }`}
