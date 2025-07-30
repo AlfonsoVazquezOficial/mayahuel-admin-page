@@ -131,18 +131,18 @@ const Sidebar = () => {
 
       {/* Sidebar container - FONDO FIJO */}
       <aside
-        className={`fixed lg:relative top-0 left-0 h-screen dark:bg-gray-800 dark:text-gray-200 bg-brand-a text-gray-800 shadow-lg z-50 transition-all duration-300 flex flex-col rounded-md ${
+        className={`fixed lg:relative top-0 left-0 h-screen  z-50 transition-all duration-300 flex flex-col rounded-md ${
           isMobile
             ? isOpen
               ? "translate-x-0 w-64"
               : "-translate-x-full w-64"
             : isOpen
-              ? "w-64"
-              : "w-16 bg-transparent shadow-none"
+              ? "w-64 dark:bg-gray-800 dark:text-gray-200 bg-brand-a text-gray-800 shadow-lg"
+              : "w-16 dark:bg-gray-900 dark:text-gray-200 bg-brand-a text-gray-800 shadow-none"
         }`}
       >
         {/* Header fijo - NO SE MUEVE */}
-        <div className="flex-shrink-0 p-5 border-b dark:border-gray-500 border-gray-200">
+        <div className={`flex-shrink-0 p-5 ${isOpen ? "border-b dark:border-gray-500 border-gray-200" : ""}`}>
           {isMobile && (
             <button
               className="self-end p-2 dark:hover:bg-gray-700 hover:bg-blue-100 rounded-md transition-all mb-4 ml-auto block"
