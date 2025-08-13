@@ -188,7 +188,7 @@ const Sidebar = () => {
               }`}
               onClick={() => setIsOpen(!isOpen)}
             >
-              <Menu size={20} className="shrink-0" />
+              <Menu size={20} className="shrink-0 text-gray-800 dark:text-white" />
               {isOpen && <span>{translations[language].menu}</span>}
             </button>
           )}
