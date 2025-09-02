@@ -42,7 +42,7 @@ export type Product = {
 export type OrderStatus = {
     id: string; // Unique identifier for the order status
     name: string; // Name of the order status (e.g., "Pending", "Completed")
-    description?: string; // Optional description of the order status
+    createdAt: string; // Date when the order status was created
 }
 
 export type OrderPaymentDetails = {
@@ -65,18 +65,12 @@ export type Order = {
     status: OrderStatus; // Current status of the order (e.g., pending, completed)
 }
 
-export const NOTIFICATION_TYPES = {
-    INFO: 'info',
-    SUCCESS: 'success',
-    WARNING: 'warning',
-    ERROR: 'error',
-    DISCOUNT: 'discount',
-} as const;
-
 export type Notification = {
     id: string;
-    type: keyof typeof NOTIFICATION_TYPES;
+    title: string;
     message: string;
-    createdAt: string;
+    color: string;
+    timeInMs: number;
+    date: string;
     isActive: boolean;
 }

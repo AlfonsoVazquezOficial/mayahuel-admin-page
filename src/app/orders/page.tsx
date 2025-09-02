@@ -5,9 +5,12 @@ import PulseSimpleItem from "../common/PulseSimpleItem";
 import { Order } from "../lib/types";
 import OrderItem from "./components/OrderItem";
 import PaginationButtons from "../common/PaginationButtons";
+import Button from "../common/Button";
+import { useRouter } from "next/navigation";
 
 const OrdersPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
+  const router = useRouter();
 
   const TEST_ORDER: Order = {
   id: 'order-001',
@@ -64,6 +67,7 @@ const OrdersPage = () => {
       description={"Aquí puedes administrar los pedidos de tu tienda."}
     >
       <div>
+        <Button color="primary" size="large" className="mb-4" onClick={() => router.push("/orders/statuses")}>Estados de Pedido</Button>
         {isLoading ? (
           <div className="space-y-4">
             <PulseSimpleItem />

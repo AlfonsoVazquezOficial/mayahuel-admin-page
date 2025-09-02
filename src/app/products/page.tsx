@@ -1,12 +1,25 @@
 'use client';
-import React from 'react'
+import React, { useEffect } from 'react'
 import BasePage from '../common/BasePage'
 import PulseSimpleItem from '../common/PulseSimpleItem';
 import PaginationButtons from '../common/PaginationButtons';
 import ProductItem from './components/ProductItem';
+import Button from '../common/Button';
+import { Product } from '../lib/types';
+import { useRouter } from 'next/navigation';
+import { GET_PAGINATED_PRODUCTS_URI } from '../lib/URIS';
+import { getFunction } from '../lib/FetchUtils';
+
+interface PaginatedResponse {
+  products: Product[];
+  lastVisible: string;
+}
 
 const ProductsPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [products, setProducts] = React.useState<Product[]>([]);
+    const [lastVisibles, setLastVisibles] = React.useState<string[]>([]);
+    const router = useRouter();
 
   const TEST_PRODUCT = {
     id: '1',
@@ -38,6 +51,37 @@ const ProductsPage = () => {
 
   }
 
+  const fetchProducts = async (lastVisible: string | null) => {
+    setIsLoading(true);
+    try {
+      let uri = GET_PAGINATED_PRODUCTS_URI;
+      if (lastVisible) {
+        uri += `&lastVisible=${lastVisible}`;
+      }
+      const data = await getFunction<PaginatedResponse>(uri, false);
+
+      setProducts(data?.products || []);
+      setLastVisibles((prev) => [...prev, data.lastVisible]);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts(null);
+  }, []);
+
+  useEffect(() => {
+    // Aquí podrías manejar la lógica para cargar más
+    // cuando se alcance el último visible.
+    if (lastVisibles.length > 0) {
+      console.log("Últimos visibles:", lastVisibles);
+      // Lógica para cargar más si es necesario
+    }
+  }, [lastVisibles]);
+
   return (
     <BasePage title='Productos' description={'Aquí puedes administrar los productos de tu tienda.'}>
         <div>
@@ -52,18 +96,46 @@ const ProductsPage = () => {
         ) : (
           <div className="space-y-4">
 
-            <ProductItem product={TEST_PRODUCT} />
-            <ProductItem product={TEST_PRODUCT} />
-            <ProductItem product={TEST_PRODUCT} />
-            <ProductItem product={TEST_PRODUCT} />
-            <ProductItem product={TEST_PRODUCT} />
+            <Button
+              color="primary"
+              onClick={() => {
+                router.push("/products/add");
+              }}
+              className="mb-4"
+              size="large"
+            >
+              Agregar
+            </Button>
+
+            {products.length > 0 ? (
+              products.map((product) => <ProductItem key={product.id} product={product} />)
+            ) : (
+              <div className="text-center text-gray-500">
+                No hay productos disponibles.
+              </div>
+            )}
 
             <PaginationButtons
-              currentPage={6}
-              totalPages={12}
-              onBack={() => console.log("Back")}
-              onNext={() => console.log("Next")}
-              onPageChange={(page) => console.log("Change to", page)}
+              onBack={() => {
+                if (lastVisibles.length > 1) {
+                  const newLastVisibles = lastVisibles.slice(0, -2);
+                  const previousLastVisible =
+                    newLastVisibles[newLastVisibles.length - 1] || null;
+                  setLastVisibles(newLastVisibles);
+                  fetchProducts(previousLastVisible);
+                } else {
+                  console.warn("No hay más páginas anteriores.");
+                }
+              }}
+              onNext={() => {
+                const lastVisible = lastVisibles[lastVisibles.length - 1];
+                if (lastVisible == "") {
+                  setLastVisibles([]);
+                }
+                fetchProducts(lastVisible);
+              }}
+              disableBack={false}
+              disableNext={false}
               isLoading={false}
             />
           </div>
