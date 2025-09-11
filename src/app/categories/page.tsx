@@ -93,8 +93,24 @@ const CategoriesPage = () => {
           }
 
             <PaginationButtons
-              onBack={() => console.log("Back")}
-              onNext={() => console.log("Next")}
+              onBack={() => {
+                if (lastVisibles.length > 1) {
+                  const newLastVisibles = lastVisibles.slice(0, -2);
+                  const previousLastVisible =
+                    newLastVisibles[newLastVisibles.length - 1] || null;
+                  setLastVisibles(newLastVisibles);
+                  fetchCategories(previousLastVisible);
+                } else {
+                  console.warn("No hay más páginas anteriores.");
+                }
+              }}
+              onNext={() => {
+                const lastVisible = lastVisibles[lastVisibles.length - 1];
+                if (lastVisible == "") {
+                  setLastVisibles([]);
+                }
+                fetchCategories(lastVisible);
+              }}
               disableBack={true}
               disableNext={false}
               isLoading={false}

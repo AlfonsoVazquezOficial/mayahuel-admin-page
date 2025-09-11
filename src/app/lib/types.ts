@@ -47,19 +47,31 @@ export type OrderStatus = {
 
 export type OrderPaymentDetails = {
     id: string; // Unique identifier for the order
-    clientName: string; // Name of the client who placed the order
-    clientEmail: string; // Email address of the client
-    clientPhone: string; // Phone number of the client
-    paymentMethod: string; // Payment method used for the order
-    paymentId?: string; // Optional payment ID if available
-    paymentStatus: string; // Status of the payment (e.g., "Paid", "Pending")
+    name: string; // Name of the client who placed the order
+    email: string; // Email address of the client
+    phone: string; // Phone number of the client
+    method: string; // Payment method used for the order
+    paymentIntentClientSecret: string; // Optional payment ID if available
+    status: string; // Status of the payment (e.g., "Paid", "Pending")
+
+}
+
+export type ProductDetailsCart = {
+    productId: string;
+    images: string[];
+    name: string;
+    pricePerUnit: number;
+    finalPrice: number;
+    quantity: number;
+    priceWithDiscount: number;
 }
 
 export type Order = {
     id: string; // Unique identifier for the order
-    products: Product[]; // Array of products in the order
+    products: ProductDetailsCart[]; // Array of products in the order
     totalAmount: number; // Total amount for the order
     paymentDetails: OrderPaymentDetails; // Payment details for the order
+    shippingDetails: Record<string, object>; // Shipping details for the order
     createdAt: string; // Date when the order was created
     updatedAt?: string; // Optional date when the order was last updated
     status: OrderStatus; // Current status of the order (e.g., pending, completed)
@@ -73,4 +85,15 @@ export type Notification = {
     timeInMs: number;
     date: string;
     isActive: boolean;
+}
+
+export type ShippingMethod = {
+    name: string;
+    price: number;
+}
+
+export type ShippingWarranty = {
+    name: string;
+    percentCost: number;
+    warrantyPercent: number;
 }

@@ -1,65 +1,58 @@
-'use client';
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import BasePage from "../common/BasePage";
 import PulseSimpleItem from "../common/PulseSimpleItem";
-import { Order } from "../lib/types";
 import OrderItem from "./components/OrderItem";
 import PaginationButtons from "../common/PaginationButtons";
 import Button from "../common/Button";
+import { Order } from "@/app/lib/types";
 import { useRouter } from "next/navigation";
+import { getFunction } from "../lib/FetchUtils";
+import { GET_PAGINATED_ORDERS_URI } from "../lib/URIS";
+
+interface PaginatedResponse {
+  orders: Order[];
+  lastVisible: string;
+}
 
 const OrdersPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const router = useRouter();
+  const [orders, setOrders] = React.useState<Order[]>([]);
+  const [lastVisibles, setLastVisibles] = React.useState<string[]>([]);
 
-  const TEST_ORDER: Order = {
-  id: 'order-001',
-  createdAt: '2025-07-20T14:35:00Z',
-  updatedAt: '2025-07-21T10:00:00Z',
-  totalAmount: 475.00,
-  status: {
-    id: 'status-completed',
-    name: 'Completado',
-    description: 'El pedido ha sido entregado exitosamente',
-  },
-  paymentDetails: {
-    id: 'payment-001',
-    clientName: 'Ana González',
-    clientEmail: 'ana.gonzalez@example.com',
-    clientPhone: '+52 744 123 4567',
-    paymentMethod: 'Tarjeta de crédito',
-    paymentId: 'pm_ABC123456789',
-    paymentStatus: 'Pagado',
-  },
-  products: [
-    {
-      id: 'prod-001',
-      name: 'Laptop Lenovo ThinkPad',
-      description: 'Laptop empresarial de 14 pulgadas',
-      price: 400,
-      stock: 1,
-      categoryId: 'cat-electronics',
-      supplierId: 'sup-001',
-      tags: [
-        { id: 'tag-urgent', name: 'Urgente', color: '#dc2626', createdAt: '2025-07-15T08:00:00Z' },
-        { id: 'tag-office', name: 'Oficina', color: '#2563eb', createdAt: '2025-07-15T08:00:00Z' }
-      ],
-      createdAt: '2025-07-15T08:00:00Z',
-      images: ['https://via.placeholder.com/150'],
-      discount: 10,
-      minimumStock: 2,
-    },
-    {
-      id: 'prod-002',
-      name: 'Mouse inalámbrico Logitech',
-      price: 75,
-      stock: 1,
-      categoryId: 'cat-accessories',
-      createdAt: '2025-07-16T09:00:00Z',
-      discount: 0,
-    },
-  ],
-}
+  const fetchOrders = async (lastVisible: string | null) => {
+    setIsLoading(true);
+    try {
+      let uri = GET_PAGINATED_ORDERS_URI;
+      if (lastVisible) {
+        uri += `&lastVisible=${lastVisible}`;
+      }
+      const data = await getFunction<PaginatedResponse>(uri, false);
+
+      setOrders(data?.orders || []);
+      console.log("Fetched orders:", data?.orders);
+      console.log("JSON:", JSON.stringify(data?.orders[0]));
+      setLastVisibles((prev) => [...prev, data.lastVisible]);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders(null);
+  }, []);
+
+  useEffect(() => {
+    // Aquí podrías manejar la lógica para cargar más proveedores
+    // cuando se alcance el último proveedor visible.
+    if (lastVisibles.length > 0) {
+      console.log("Últimos proveedores visibles:", lastVisibles);
+      // Lógica para cargar más proveedores si es necesario
+    }
+  }, [lastVisibles]);
 
   return (
     <BasePage
@@ -67,7 +60,32 @@ const OrdersPage = () => {
       description={"Aquí puedes administrar los pedidos de tu tienda."}
     >
       <div>
-        <Button color="primary" size="large" className="mb-4" onClick={() => router.push("/orders/statuses")}>Estados de Pedido</Button>
+        <div className="space-x-4 mb-6">
+          <Button
+          color="primary"
+          size="large"
+          className="mb-4"
+          onClick={() => router.push("/orders/statuses")}
+        >
+          Estados de Pedido
+        </Button>
+        <Button
+          color="primary"
+          size="large"
+          className="mb-4"
+          onClick={() => router.push("/orders/shipping-methods")}
+        >
+          Tipos de Envíos
+        </Button>
+        <Button
+          color="primary"
+          size="large"
+          className="mb-4"
+          onClick={() => router.push("/orders/warranties")}
+        >
+          Garantías
+        </Button>
+        </div>
         {isLoading ? (
           <div className="space-y-4">
             <PulseSimpleItem />
@@ -78,19 +96,38 @@ const OrdersPage = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            <OrderItem order={TEST_ORDER} />
-            <OrderItem order={TEST_ORDER} />
-            <OrderItem order={TEST_ORDER} />
-            <OrderItem order={TEST_ORDER} />
-            <OrderItem order={TEST_ORDER} />
-            <PaginationButtons
-              currentPage={1}
-              totalPages={5}
-              onBack={() => console.log("Back")}
-              onNext={() => console.log("Next")}
-              onPageChange={(page) => console.log("Change to", page)}
-              isLoading={false}
-            />
+            {orders.length > 0 ? (
+              <>
+                {orders.map((order) => (
+                  <OrderItem key={order.id} order={order} />
+                ))}
+                <PaginationButtons
+                  onBack={() => {
+                    if (lastVisibles.length > 1) {
+                      const newLastVisibles = lastVisibles.slice(0, -2);
+                      const previousLastVisible =
+                        newLastVisibles[newLastVisibles.length - 1] || null;
+                      setLastVisibles(newLastVisibles);
+                      fetchOrders(previousLastVisible);
+                    } else {
+                      console.warn("No hay más páginas anteriores.");
+                    }
+                  }}
+                  onNext={() => {
+                    const lastVisible = lastVisibles[lastVisibles.length - 1];
+                    if (lastVisible == "") {
+                      setLastVisibles([]);
+                    }
+                    fetchOrders(lastVisible);
+                  }}
+                  disableBack={true}
+                  disableNext={false}
+                  isLoading={false}
+                />
+              </>
+            ) : (
+              <p>No hay pedidos disponibles.</p>
+            )}
           </div>
         )}
       </div>
