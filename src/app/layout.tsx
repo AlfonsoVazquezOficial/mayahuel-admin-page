@@ -13,21 +13,21 @@ export const metadata: Metadata = {
   description: "Admin interface for managing jewelry products",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className="transition-colors duration-3000">
-      <body className="">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className="transition-colors duration-3000"
+    >
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          {children} {/* Aquí solo van layouts de grupos */}
         </ThemeProvider>
       </body>
     </html>

@@ -67,6 +67,9 @@ const POST_DELETE_SHIPPING_WARRANTY_URI = `http://${DATA_IP}:${DATA_PORT}/shippi
 const POST_SAVE_SHIPPING_WARRANTY_URI = `http://${DATA_IP}:${DATA_PORT}/shipping-warranties/save`;
 const GET_SHIPPING_WARRANTY_BY_ID_URI = `http://${DATA_IP}:${DATA_PORT}/shipping-warranties/get-by-id`;
 
+// Users
+const POST_CREATE_SYSTEM_USER_URI = `http://${DATA_IP}:${DATA_PORT}/users/create/system`;
+
 export {
     AUTH_IP,
     AUTH_PORT,
@@ -117,5 +120,6 @@ export {
     POST_DELETE_SHIPPING_METHOD_URI,
     POST_DELETE_SHIPPING_WARRANTY_URI,
     POST_SAVE_SHIPPING_WARRANTY_URI,
-    GET_SHIPPING_WARRANTY_BY_ID_URI
+    GET_SHIPPING_WARRANTY_BY_ID_URI,
+    POST_CREATE_SYSTEM_USER_URI
 }

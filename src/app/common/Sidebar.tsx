@@ -17,6 +17,7 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, type ReactNode } from "react";
 import { ThemeToggle } from "./ThemeToggle";
+import { useAuth } from "../hooks/useAuth";
 
 interface Option {
   name: string;
@@ -96,12 +97,13 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [language, setLanguage] = useState<keyof typeof translations>("es");
-  const [user, setUser] = useState<UserType | null>({
+  const [userData, setUserData] = useState<UserType | null>({
     name: "Usuario Demo",
     email: "demo@example.com",
   });
   const pathname = usePathname();
   const router = useRouter();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     const handleResize = () => {
@@ -128,10 +130,23 @@ const Sidebar = () => {
     localStorage.setItem("lang", newLang);
   };
 
-  const logout = () => {
-    setUser(null);
+  const logoutLocal = () => {
+    setUserData(null);
+    logout();
     router.push("/login");
   };
+
+  useEffect(() => {
+    if (user) {
+      setUserData({
+        name: user.displayName || "No Name",
+        email: user.email || "No Email",
+      });
+      console.log(user);
+    } else {
+      setUserData(null);
+    }
+  }, [user]);
 
   return (
     <>
@@ -207,14 +222,15 @@ const Sidebar = () => {
         {isOpen && (
           <div className="flex-1 overflow-y-auto p-5 flex flex-col">
             {/* User info */}
-            {user && (
+            {userData && (
               <div className="p-4 dark:bg-gray-800 bg-brand-c rounded-lg flex flex-col items-center text-center shadow-md mb-4 flex-shrink-0">
                 <User size={40} className="text-gray-400 mb-2" />
-                <p className="text-sm font-semibold">{user.name}</p>
-                <p className="text-xs text-gray-400">{user.email}</p>
+                <p className="text-sm font-semibold">{userData.name}</p>
+                <p className="text-xs text-gray-400">{userData.email}</p>
+                <p></p>
                 <button
                   className="bg-red-500 hover:bg-red-600 dark:text-white text-gray-100 py-2 px-4 rounded-md mt-3 flex items-center gap-2 shadow-md transition-all cursor-pointer"
-                  onClick={logout}
+                  onClick={logoutLocal}
                 >
                   Cerrar Sesión
                 </button>

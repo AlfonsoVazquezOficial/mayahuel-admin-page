@@ -37,6 +37,7 @@ export type Product = {
     images?: string[]; // Optional array of image URLs for the product
     discount?: number; // Optional discount percentage for the product
     minimumStock?: number; // Optional minimum stock quantity for the product
+    finalPrice?: number; // Optional final price after applying discounts
 }
 
 export type OrderStatus = {
@@ -96,4 +97,11 @@ export type ShippingWarranty = {
     name: string;
     percentCost: number;
     warrantyPercent: number;
+}
+
+export type CreateUser = {
+    displayName: string;
+    name: string;
+    email: string;
+    password: string;
 }
